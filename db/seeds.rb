@@ -7,14 +7,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 WEBSITE = "http://kultofathena.com"
-PROPERTIES = {total_length: "Overall Length:",
+PROPERTIES = {
+              total_length: "Overall Length:",
               blade_length: "Blade:",
               weight: "Weight:",
               edge: "Edge:",
-              pob: "P.0.B:",
+              pob: "P.O.B:",
               thickiness: "Thickness:",
               width: "Width:",
-              hilt_length: "Grip Length:"}
+              hilt_length: "Grip Length:"
+            }
 
 puts "=== Initializing Mechanize ==="
 agent = Mechanize.new
@@ -28,7 +30,7 @@ count = 0
 product_links.each do |link|
   sword_page = agent.get("#{WEBSITE}/#{link.href}")
   tds = sword_page.search('td')
-  in_stock = tds.any? { |td| !td.nil? && td.text.match("In Stock!")}
+  in_stock = tds.any? { |td| !td.nil? && td.text.downcase.match("in stock")}
   prices = agent.get("#{WEBSITE}/#{link.href}").search("font").select { |font| !font.nil? && font.text.match(/\$\d+/)}
   if prices.first.text[0] == "$"
     price = prices.first.text.gsub("$", "")
@@ -47,10 +49,9 @@ product_links.each do |link|
     price: price}
   PROPERTIES.each do |property, property_text|
     value_blob = tds.select { |td| !td.nil? && td.text.match(property_text)}.first
-    next if value_blob.nil?
+    next if value_blob.blank?
     value_blob = value_blob.text
-    value = value_blob.split(property_text).last.split("\r").first.split(" ")
-                      .first.gsub(/\s/,"").strip
+    value = value_blob.split(property_text).last.split("\r").first.split(" ").first.gsub(/\s/,"").strip
     if value[0].ord > 122 || value[0].ord < 48
       value = value[1..-1]
     end

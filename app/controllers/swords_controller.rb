@@ -1,6 +1,7 @@
 class SwordsController < ApplicationController
   def index
-    @swords = Sword.all.order(:price)
+    @swords = Sword.all
+    
     if params[:price] && params[:price].length > 0
       @swords = @swords.where("price <= ?", params[:price])
     end
@@ -20,9 +21,11 @@ class SwordsController < ApplicationController
     if params[:blunt]
       @swords = @swords.where("lower(edge) in (?, ?)", "blunt", "unsharpened")
     end
-    
+
     if params[:sort]
       @swords = @swords.order(params[:sort])
+    else
+      @swords = @swords.order(:price)
     end
   end
 end
