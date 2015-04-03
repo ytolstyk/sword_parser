@@ -16,12 +16,15 @@ PROPERTIES = {total_length: "Overall Length:",
               width: "Width:",
               hilt_length: "Grip Length:"}
 
+puts "=== Initializing Mechanize ==="
 agent = Mechanize.new
 main_page = agent.get("#{WEBSITE}/swords-stage.asp")
 product_links = main_page.links.select do |link|
   !link.href.nil? && link.href.match("product")
 end
 
+puts "=== Begin seeding ==="
+count = 0
 product_links.each do |link|
   sword_page = agent.get("#{WEBSITE}/#{link.href}")
   tds = sword_page.search('td')
@@ -54,7 +57,12 @@ product_links.each do |link|
     sword_properties[property] = value
   end
   Sword.create(sword_properties)
+  count += 1
+  print "."
+  print count / 10 if count % 10 == 0
 end
+puts "!"
+puts "=== All done ==="
 
 
 # Overall Length: 37 1/4'' Blade: 29 3/8''  
