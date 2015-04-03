@@ -1,0 +1,29 @@
+<form method="GET">
+  <label>price<input type="string" name="price"></label>
+  <label>length<input type="string" name="length"></label>
+  <button>filter</button>
+</form>
+<table>
+  <tr> 
+    <th>Name</th>
+    <th>Length</th>
+    <th>Grip length</th>
+    <th>Price</th>
+    <th>Weight</th>
+    <th>Edge</th>
+    <th>In Stock</th>
+    <th>Link</th>
+  </tr>
+  <% @swords.each do |sword| %>
+    <tr>
+      <td><%= sword.name %></td>
+      <td><%= sword.total_length %></td>
+      <td><%= sword.hilt_length %></td>
+      <td><%= sword.price %></td>
+      <td><%= sword.weight %></td>
+      <td><%= sword.edge %></td>
+      <td><%= sword.in_stock %></td>
+      <td><%= link_to "link", sword.page_url %></td>
+    </lr>
+  <% end %>
+</table>
