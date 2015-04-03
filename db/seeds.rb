@@ -26,7 +26,12 @@ product_links.each do |link|
   sword_page = agent.get("#{WEBSITE}/#{link.href}")
   tds = sword_page.search('td')
   in_stock = tds.any? { |td| !td.nil? && td.text.match("In Stock!")}
-  price = sword_page.search("font").select { |font| !font.nil? && font.text.match(/\$\d+/)}.first.text[1..-1]
+  prices = agent.get("#{WEBSITE}/#{link.href}").search("font").select { |font| !font.nil? && font.text.match(/\$\d+/)}
+  if prices.first.text[0] == "$"
+    price = prices.first.text.gsub("$", "")
+  else
+    price = prices.last.text.gsub("$", "")
+  end
 
   sword_name = link.href.split("name=").last.gsub('+', ' ')[0...-1]
   sword_item = link.href.split("item=").last.split("&").first
