@@ -1,3 +1,4 @@
+# encoding: utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -40,10 +41,13 @@ product_links.each do |link|
     value_blob = tds.select { |td| !td.nil? && td.text.match(property_text)}.first
     next if value_blob.nil?
     value_blob = value_blob.text
-    value = value_blob.split(property_text).last.split("\r").first.split(" ").first.gsub(/\s/,"").strip
+    value = value_blob.split(property_text).last.split("\r").first.split(" ")
+                      .first.gsub(/\s/,"").strip
+    if value[0].ord > 122 || value[0].ord < 48
+      value = value[1..-1]
+    end
     sword_properties[property] = value
   end
-  puts sword_properties
   Sword.create(sword_properties)
 end
 

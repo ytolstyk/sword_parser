@@ -1,9 +1,18 @@
 <form method="GET">
-  <label>price<input type="string" name="price"></label>
-  <label>length<input type="string" name="length"></label>
+  <label for "price">price<input type="string" name="price" value="<%= params[:price]%>"></label>
+  <label>length<input type="string" name="length" value="<%= params[:length]%>"></label>
+  <label>grip length<input type="string" name="grip" value="<%= params[:grip]%>"></label>
+  <label>in stock<input type="checkbox" name="instock" <%= "checked" if params[:instock]%>></label>
+  <label>blunt only<input type="checkbox" name="blunt" <%= "checked" if params[:blunt]%>></label>
+  <label>sort by<select name="sort">
+  <option value="price">price</option>
+  <option value="total_length">length</option>
+  <option value="hilt_length">grip length</option>
+  <option value="weight">weight</option>
+</select> </label>
   <button>filter</button>
 </form>
-<table>
+<table class="table">
   <tr> 
     <th>Name</th>
     <th>Length</th>
