@@ -4,12 +4,6 @@
   <label>grip length<input type="string" name="grip" value="<%= params[:grip]%>"></label>
   <label>in stock<input type="checkbox" name="instock" <%= "checked" if params[:instock]%>></label>
   <label>blunt only<input type="checkbox" name="blunt" <%= "checked" if params[:blunt]%>></label>
-  <label>sort by<select name="sort">
-    <option value="price">price</option>
-    <option value="total_length">length</option>
-    <option value="hilt_length">grip length</option>
-    <option value="weight">weight</option>
-  </select></label>
   <button>filter</button>
 </form>
 <form action="<%= root_url %>">
@@ -17,11 +11,11 @@
 </form>
 <table class="table">
   <tr> 
-    <th>Name</th>
-    <th>Length</th>
-    <th>Grip length</th>
-    <th>Price</th>
-    <th>Weight</th>
+    <th><%= sortable "name", "Name" %></th>
+    <th><%= sortable "total_length", "Length" %></th>
+    <th><%= sortable "hilt_length", "Grip length" %></th>
+    <th><%= sortable "price", "Price" %></th>
+    <th><%= sortable "weight", "Weigth" %></th>
     <th>Edge</th>
     <th>In Stock</th>
     <th>Link</th>
@@ -39,3 +33,5 @@
     </lr>
   <% end %>
 </table>
+
+<%= paginate @swords %>
